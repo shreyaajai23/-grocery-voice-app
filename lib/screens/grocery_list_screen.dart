@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import '../models/grocery_item.dart';
 import '../models/product_suggestion.dart';
@@ -65,20 +66,28 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          VoiceInputButton(
-            idleHint: 'Tap to speak a grocery item',
-            onFinalResult: (text) => _updateSuggestions(text),
-          ),
-          const SizedBox(height: 12),
+          if (!kIsWeb)
+            VoiceInputButton(
+              idleHint: 'Tap to speak a grocery item',
+              onFinalResult: (text) => _updateSuggestions(text),
+            ),
+          if (!kIsWeb) const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
                 child: TextField(
                   controller: _textController,
-                  decoration: const InputDecoration(
-                    hintText: 'Or type an item…',
+                  decoration: InputDecoration(
+                    // The custom mic button relies on the Web Speech API,
+                    // which Safari/WebKit doesn't support. On web, this
+                    // field is the primary input — use your keyboard's own
+                    // dictation button to speak into it.
+                    hintText: kIsWeb
+                        ? 'Type, or tap here and use your keyboard\'s '
+                            'dictation button…'
+                        : 'Or type an item…',
                     isDense: true,
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                   ),
                   onChanged: _updateSuggestions,
                   onSubmitted: (text) {
