@@ -5,6 +5,7 @@ import '../models/product_suggestion.dart';
 import '../services/product_search_service.dart';
 import '../widgets/voice_input_button.dart';
 import '../widgets/product_suggestion_list.dart';
+import '../theme.dart';
 
 class GroceryListScreen extends StatefulWidget {
   const GroceryListScreen({super.key});
@@ -142,28 +143,58 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
           const SizedBox(height: 12),
           Expanded(
             child: _items.isEmpty
-                ? const Center(child: Text('Your grocery list is empty.'))
-                : ListView.builder(
+                ? Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.shopping_basket_outlined,
+                          size: 40,
+                          color: PantryTalkTheme.terracotta.withValues(
+                            alpha: 0.35,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Your basket is empty.',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: PantryTalkTheme.ink.withValues(
+                                  alpha: 0.5,
+                                ),
+                              ),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.separated(
                     itemCount: _items.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 8),
                     itemBuilder: (context, index) {
                       final item = _items[index];
-                      return CheckboxListTile(
-                        value: item.isChecked,
-                        onChanged: (_) => _toggleChecked(item),
-                        title: Text(
-                          item.name,
-                          style: item.isChecked
-                              ? const TextStyle(
-                                  decoration: TextDecoration.lineThrough,
-                                )
+                      return Card(
+                        child: CheckboxListTile(
+                          value: item.isChecked,
+                          onChanged: (_) => _toggleChecked(item),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text(
+                            item.name,
+                            style: item.isChecked
+                                ? TextStyle(
+                                    decoration: TextDecoration.lineThrough,
+                                    color: PantryTalkTheme.ink.withValues(
+                                      alpha: 0.4,
+                                    ),
+                                  )
+                                : null,
+                          ),
+                          subtitle: item.brand != null
+                              ? Text('${item.brand} · ${item.source ?? ''}')
                               : null,
-                        ),
-                        subtitle: item.brand != null
-                            ? Text('${item.brand} · ${item.source ?? ''}')
-                            : null,
-                        secondary: IconButton(
-                          icon: const Icon(Icons.delete_outline),
-                          onPressed: () => _removeItem(item),
+                          secondary: IconButton(
+                            icon: const Icon(Icons.delete_outline),
+                            onPressed: () => _removeItem(item),
+                          ),
                         ),
                       );
                     },

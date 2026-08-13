@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/product_suggestion.dart';
+import '../theme.dart';
 
 class ProductSuggestionList extends StatelessWidget {
   final List<ProductSuggestion> suggestions;
@@ -20,24 +21,40 @@ class ProductSuggestionList extends StatelessWidget {
         constraints: const BoxConstraints(maxHeight: 240),
         child: ListView.separated(
           shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(vertical: 4),
           itemCount: suggestions.length,
-          separatorBuilder: (_, _) => const Divider(height: 1),
+          separatorBuilder: (_, _) => Divider(
+            height: 1,
+            color: PantryTalkTheme.terracotta.withValues(alpha: 0.08),
+          ),
           itemBuilder: (context, index) {
             final s = suggestions[index];
+            final isRewe = s.source == 'REWE';
             return ListTile(
               dense: true,
-              leading: CircleAvatar(
-                radius: 12,
-                backgroundColor: s.source == 'REWE'
-                    ? Colors.red.shade100
-                    : Colors.blue.shade100,
-                child: Text(
-                  s.source == 'REWE' ? 'R' : 'D',
-                  style: const TextStyle(fontSize: 10),
-                ),
-              ),
               title: Text(s.name),
               subtitle: s.brand != null ? Text(s.brand!) : null,
+              trailing: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 3,
+                ),
+                decoration: BoxDecoration(
+                  color: isRewe
+                      ? PantryTalkTheme.peach
+                      : PantryTalkTheme.sagePale,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  s.source,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: isRewe
+                        ? PantryTalkTheme.terracottaDark
+                        : const Color(0xFF25381F),
+                  ),
+                ),
+              ),
               onTap: () => onSelect(s),
             );
           },

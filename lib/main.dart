@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
+import 'theme.dart';
 
 void main() {
-  runApp(const GroceryVoiceApp());
+  runApp(const PantryTalkApp());
 }
 
-class GroceryVoiceApp extends StatelessWidget {
-  const GroceryVoiceApp({super.key});
+class PantryTalkApp extends StatelessWidget {
+  const PantryTalkApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Grocery Voice App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
-      ),
+      title: 'PantryTalk',
+      theme: PantryTalkTheme.light(),
       home: const HomeScreen(),
     );
   }

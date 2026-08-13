@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import '../models/cooking_note.dart';
 import '../widgets/voice_input_button.dart';
+import '../theme.dart';
 
 class CookingNotesScreen extends StatefulWidget {
   const CookingNotesScreen({super.key});
@@ -96,18 +97,48 @@ class _CookingNotesScreenState extends State<CookingNotesScreen> {
           const SizedBox(height: 16),
           Expanded(
             child: _notes.isEmpty
-                ? const Center(child: Text('No cooking notes yet.'))
-                : ListView.builder(
+                ? Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.soup_kitchen_outlined,
+                          size: 40,
+                          color: PantryTalkTheme.terracotta.withValues(
+                            alpha: 0.35,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'No cooking notes yet.',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: PantryTalkTheme.ink.withValues(
+                                  alpha: 0.5,
+                                ),
+                              ),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.separated(
                     itemCount: _notes.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 8),
                     itemBuilder: (context, index) {
                       final note = _notes[index];
-                      return ListTile(
-                        leading: const Icon(Icons.restaurant),
-                        title: Text(note.text),
-                        subtitle: Text(_timeFormat.format(note.createdAt)),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete_outline),
-                          onPressed: () => _removeNote(note),
+                      return Card(
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: PantryTalkTheme.sagePale,
+                            foregroundColor: const Color(0xFF25381F),
+                            child: const Icon(Icons.restaurant, size: 18),
+                          ),
+                          title: Text(note.text),
+                          subtitle: Text(_timeFormat.format(note.createdAt)),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete_outline),
+                            onPressed: () => _removeNote(note),
+                          ),
                         ),
                       );
                     },

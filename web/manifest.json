@@ -1,11 +1,11 @@
 {
-    "name": "Grocery Voice App",
-    "short_name": "Grocery",
+    "name": "PantryTalk",
+    "short_name": "PantryTalk",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#f4faec",
-    "theme_color": "#4c662b",
-    "description": "Voice-driven grocery list and cooking notes.",
+    "background_color": "#FBF3EA",
+    "theme_color": "#B5502F",
+    "description": "PantryTalk — speak your grocery list and cooking notes.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
