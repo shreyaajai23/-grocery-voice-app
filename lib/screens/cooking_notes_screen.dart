@@ -41,20 +41,41 @@ class _CookingNotesScreenState extends State<CookingNotesScreen> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          if (kIsWeb)
+          if (kIsWeb) ...[
             // The custom mic button relies on the Web Speech API, which
             // Safari/WebKit doesn't support. On web, rely on iOS/Android's
             // own keyboard dictation button instead — it works in any text
             // field regardless of what the page implements.
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.mic, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'To talk: tap the box below to bring up your '
+                      'keyboard, then tap the microphone icon on the '
+                      'keyboard itself to speak.',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
             Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _textController,
                     decoration: const InputDecoration(
-                      hintText:
-                          'Tap here, then use your keyboard\'s dictation '
-                          'button to speak…',
+                      hintText: 'Type or dictate a measurement…',
                       border: OutlineInputBorder(),
                     ),
                     onSubmitted: _addNote,
@@ -65,8 +86,8 @@ class _CookingNotesScreenState extends State<CookingNotesScreen> {
                   onPressed: () => _addNote(_textController.text),
                 ),
               ],
-            )
-          else
+            ),
+          ] else
             VoiceInputButton(
               idleHint:
                   'Tap and read out a measurement, e.g. "200 grams flour"',

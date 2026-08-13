@@ -72,6 +72,31 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
               onFinalResult: (text) => _updateSuggestions(text),
             ),
           if (!kIsWeb) const SizedBox(height: 12),
+          if (kIsWeb) ...[
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.mic, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'To talk: tap the box below to bring up your '
+                      'keyboard, then tap the microphone icon on the '
+                      'keyboard itself to speak.',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
           Row(
             children: [
               Expanded(
